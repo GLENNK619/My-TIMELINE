@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduBridge - Learn. Practise. Improve.</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    header {
+      background: #123b72;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 650px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .quiz {
+      background: white;
+      padding: 25px;
+      margin-top: 25px;
+      border-radius: 12px;
+    }
+
+    select, button {
+      padding: 12px;
+      margin-top: 12px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #123b72;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    .answer {
+      display: block;
+      padding: 12px;
+      margin: 8px 0;
+      background: #e2e8f0;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>EduBridge</h1>
+    <p>Learn. Practise. Improve.</p>
+  </header>
+
+  <main>
+    <h2>Welcome to EduBridge!</h2>
+    <p>Your journey to better grades starts here.</p>
+
+    <h3>Choose a subject</h3>
+
+    <select id="subject">
+      <option value="physics">Physics</option>
+      <option value="chemistry">Chemistry</option>
+      <option value="mathematics">Mathematics</option>
+    </select>
+
+    <section class="quiz">
+      <h3 id="question">Loading question...</h3>
+      <div id="answers"></div>
+
+      <button onclick="checkAnswer()">Check answer</button>
+      <p id="result"></p>
+    </section>
+  </main>
+
+  <script>
+    const questions = {
+      physics: {
+        question: "What is the SI unit of force?",
+        answers: ["Joule", "Newton", "Watt", "Pascal"],
+        correct: 1
+      },
+      chemistry: {
+        question: "What is the chemical symbol for oxygen?",
+        answers: ["O", "Ox", "Og", "On"],
+        correct: 0
+      },
+      mathematics: {
+        question: "What is the derivative of x²?",
+        answers: ["x", "2x", "x³", "2"],
+        correct: 1
+      }
+    };
+
+    let selectedAnswer = -1;
+
+    function loadQuestion() {
+      const subject = document.getElementById("subject").value;
+      const q = questions[subject];
+
+      selectedAnswer = -1;
+
+      document.getElementById("question").textContent = q.question;
+      document.getElementById("result").textContent = "";
+
+      document.getElementById("answers").innerHTML =
+        q.answers.map((answer, index) =>
+          `<label class="answer">
+            <input type="radio" name="answer" value="${index}"
+              onchange="selectedAnswer=${index}">
+            ${answer}
+          </label>`
+        ).join("");
+    }
+
+    function checkAnswer() {
+      const subject = document.getElementById("subject").value;
+      const correct = questions[subject].correct;
+      const result = document.getElementById("result");
+
+      if (selectedAnswer === -1) {
+        result.textContent = "Please select an answer!";
+      } else if (selectedAnswer === correct) {
+        result.textContent = "Correct! Excellent work!";
+      } else {
+        result.textContent = "Incorrect. Try again!";
+      }
+    }
+
+    document.getElementById("subject")
+      .addEventListener("change", loadQuestion);
+
+    loadQuestion();
+  </script>
+</body>
+</html>
